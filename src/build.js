@@ -2,6 +2,18 @@
 const camelize = require('camelize');
 const except = require('except');
 
+const defaultTemplateFn = (jsx, frontMatterAttributes, doImports) => `
+${doImports}
+
+export const attributes = ${frontMatterAttributes};
+export default function() {
+  return (
+    <div>
+      ${jsx}
+    </div>
+  );
+};`;
+
 /**
  * @typedef HTMLObject
  * @type {Object}
@@ -15,7 +27,7 @@ const except = require('except');
  * @param   {HTMLObject} markdown - HTML and imports
  * @returns {String}              - React Component
  */
-module.exports = function build(markdown) {
+module.exports = function build(markdown, options = {}) {
 
   let doImports = 'import React from \'react\';\n';
   const
@@ -31,15 +43,6 @@ module.exports = function build(markdown) {
     }
   }
 
-  return `
-${doImports}
-
-export const attributes = ${JSON.stringify(camelize(frontMatterAttributes))};
-export default function() {
-  return (
-    <div>
-      ${jsx}
-    </div>
-  );
-};`;
+  const templateFn = options.template || defaultTemplateFn;
+  return templateFn(jsx, JSON.stringify(camelize(frontMatterAttributes)), doImports);
 };
