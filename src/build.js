@@ -43,6 +43,6 @@ module.exports = function build(markdown, options = {}) {
     }
   }
 
-  const templateFn = options.template || defaultTemplateFn;
+  const templateFn = options.templates.default || defaultTemplateFn;
   return templateFn(jsx, JSON.stringify(camelize(frontMatterAttributes)), doImports);
 };
