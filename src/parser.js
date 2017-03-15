@@ -93,7 +93,7 @@ function parseMarkdown(markdown) {
       // gets tags applied to fence blocks ```react html
       const codeTags = tokens[idx].params.split(/\s+/g);
       if (codeTags.length <= 1) {
-        return tokens[idx].content      
+        return tokens[idx].content;
       }
       return parseCodeBlock(
         tokens[idx].content,
